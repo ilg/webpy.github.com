@@ -47,3 +47,28 @@ Here is a sample code which saves session in `web.config`.
 
     if __name__ == "__main__":
        app.run()
+
+
+As an alternative using a global `session` variable, the session stored in `web.config` (as above) can be set as a property of a class to be used as a base for request classes.
+
+    import web
+    urls = ("/", "hello")
+
+    app = web.application(urls, globals())
+
+    if web.config.get('_session') is None:
+        web.config._session = web.session.Session(app, web.session.DiskStore('sessions'), {'count': 0})
+	
+	class request_base:
+		def __init__(self):
+			self.session = web.config._session
+
+    class hello (request_base):
+       def GET(self):
+           print 'session', self.session
+           self.session.count += 1
+           return 'Hello, %s!' % self.session.count
+
+    if __name__ == "__main__":
+       app.run()
+

@@ -44,3 +44,5 @@ In your app.py (or main.py) initialize your session like this:
         <p>You are $session.username</p>
     $else:
         <p>You are not logged in</p>
+
+Alternately, the somewhat-simpler methods described in [Using session with reloader](/cookbook/session_with_reloader) will also work for bringing sessions into subapps.  The code that ensures that the session ends up in `web.ctx._session` should only appear in the main app.
